@@ -1,1 +1,1 @@
-Sitemap: https://horizon.cosmicthemes.com/sitemap-index.xml
+Sitemap: https://wedding.example.com/sitemap-index.xml

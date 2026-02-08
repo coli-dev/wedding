@@ -40,33 +40,19 @@ const today = new Date();
 
 		<!-- socials -->
 		<div class="text-primary-500 mt-8 flex justify-center gap-4">
-			<a href="https://x.com/BowTiedWebReapr" target="_blank" rel="noopener noreferrer">
-				<Icon name="socials/mdi-facebook" class="size-6 transition hover:opacity-80" />
-				<span class="sr-only">Facebook</span>
-			</a>
-			<a href="https://x.com/BowTiedWebReapr" target="_blank" rel="noopener noreferrer">
-				<Icon name="socials/mdi-twitter" class="size-6 transition hover:opacity-80" />
-				<span class="sr-only">Twitter</span>
-			</a>
-			<a href="https://x.com/BowTiedWebReapr" target="_blank" rel="noopener noreferrer">
-				<Icon name="socials/mdi-youtube" class="size-6 transition hover:opacity-80" />
-				<span class="sr-only">Youtube</span>
-			</a>
-			<a href="https://x.com/BowTiedWebReapr" target="_blank" rel="noopener noreferrer">
-				<Icon name="socials/basil-instagram-solid" class="size-6 transition hover:opacity-80" />
-				<span class="sr-only">Instagram</span>
-			</a>
+			<Icon name="socials/mdi-facebook" class="size-6 opacity-50" />
+			<span class="sr-only">Facebook</span>
+			<Icon name="socials/mdi-twitter" class="size-6 opacity-50" />
+			<span class="sr-only">Twitter</span>
+			<Icon name="socials/mdi-youtube" class="size-6 opacity-50" />
+			<span class="sr-only">Youtube</span>
+			<Icon name="socials/basil-instagram-solid" class="size-6 opacity-50" />
+			<span class="sr-only">Instagram</span>
 		</div>
 
 		<!-- copyright -->
 		<div class="mt-4 mb-2 text-center text-sm opacity-80">
-			&copy; {today.getFullYear()} a theme by <a
-				href="https://cosmicthemes.com"
-				class="hover:text-primary-600 transition"
-				target="_blank"
-				rel="noopener">Cosmic Themes</a
-			>
-			<!-- {siteData.name}. All rights reserved. -->
+			&copy; {today.getFullYear()} {siteData.author.name}. All rights reserved.
 		</div>
 	</div>
 </footer>

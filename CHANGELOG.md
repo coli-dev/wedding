@@ -6,6 +6,14 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+- Rebranded project metadata and content
+  - Updated package name to `wedding` and version to `0.0.1`
+  - Replaced all legacy branding and authoring references with `Huynh Duc Khoan`
+  - Replaced old site URLs in `astro.config.mjs` and `public/robots.txt`
+  - Updated navigation CTA labels/links and footer attribution to project-owned content
+  - Simplified `README.md` and removed unrelated external links
+  - Replaced external demo links in sample MDX content with internal links
+
 - Migrated from pnpm to bun as the package manager
   - Removed `pnpm-lock.yaml`
   - Removed `.npmrc` (pnpm-specific configuration)

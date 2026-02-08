@@ -12,14 +12,13 @@
 @import "./markdown-content.css" layer(components);
 @import "./buttons.css" layer(components);
 
-/* https://tailwindcss.com/docs/adding-custom-styles#using-css-and-layer */
 @layer base {
 	:root {
 		/* default font */
 		font-family: var(--font-sans);
 	}
 
-	/* starwind preflight merged with Cosmic Themes */
+	/* starwind preflight merged with project styles */
 	* {
 		@apply border-base-200 outline-none;
 	}

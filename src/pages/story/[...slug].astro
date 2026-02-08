@@ -1,0 +1,132 @@
+---
+import { Image } from "astro:assets";
+import { type CollectionEntry, getCollection, render } from "astro:content";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import type { InferGetStaticPropsType } from "astro";
+
+const storyIds = ["couple-1", "couple-2", "couple-3"];
+
+export async function getStaticPaths() {
+	const staticStoryIds = ["couple-1", "couple-2", "couple-3"];
+
+	const stories = await getCollection(
+		"portfolios",
+		({ id, data }) => data.draft !== true && staticStoryIds.includes(id),
+	);
+
+	return stories.map((story) => ({
+		params: { slug: story.id },
+		props: story,
+	}));
+}
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const story = Astro.props as Props;
+const { Content } = await render(story);
+
+const { title, description, date, images, clients, location, heroImage } = story.data;
+
+const allStories = await getCollection(
+	"portfolios",
+	({ id, data }) => data.draft !== true && storyIds.includes(id),
+);
+
+const sortedStories = allStories.sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999));
+const currentIndex = sortedStories.findIndex((item) => item.id === story.id);
+const nextStory = currentIndex >= 0 ? sortedStories[(currentIndex + 1) % sortedStories.length] : null;
+---
+
+<BaseLayout title={`${title} | Wedding Story`} description={description} heroImage={heroImage} navStartStyle="white">
+	<section class="relative isolate overflow-hidden bg-base-900 pt-28 pb-16 text-white md:pt-36 md:pb-24">
+		<div class="pointer-events-none absolute inset-0">
+			<div class="absolute inset-0 bg-gradient-to-br from-primary-700/40 via-base-900 to-fuchsia-700/30"></div>
+			<Image
+				src={heroImage}
+				alt={`Cover for ${title}`}
+				width={1800}
+				class="absolute inset-0 h-full w-full object-cover opacity-30 mix-blend-screen"
+				loading="eager"
+			/>
+		</div>
+
+		<div class="site-container relative z-10">
+			<a
+				href="/#timeline"
+				class="mb-6 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-xs tracking-[0.12em] uppercase transition hover:bg-white/25"
+			>
+				<span aria-hidden="true">←</span>
+				Back to timeline
+			</a>
+			<p class="mb-3 text-xs tracking-[0.35em] uppercase text-white/75">Wedding Story Detail</p>
+			<h1 class="max-w-4xl font-heading-1 text-4xl leading-tight md:text-6xl">{title}</h1>
+			<p class="mt-5 max-w-2xl text-white/85 md:text-lg">{description}</p>
+			<div class="mt-8 flex flex-wrap items-center gap-3 text-sm text-white/85">
+				<span class="rounded-full bg-white/15 px-3 py-1.5">{date}</span>
+				<span class="rounded-full bg-white/15 px-3 py-1.5">{clients.join(" & ")}</span>
+				<span class="rounded-full bg-white/15 px-3 py-1.5">{location}</span>
+			</div>
+		</div>
+	</section>
+
+	<section class="bg-base-50 py-14 md:py-20">
+		<div class="site-container">
+			<div class="mx-auto max-w-3xl text-center">
+				<p class="mb-2 text-xs tracking-[0.2em] uppercase text-primary-700">Story Notes</p>
+				<div class="description text-base-800 md:text-lg">
+					<Content />
+				</div>
+			</div>
+
+			<div class="mt-12 space-y-4 md:mt-16 md:space-y-6">
+				{
+					images.map((group, groupIndex) => (
+						<div
+							class:list={[
+								"grid gap-4 md:gap-6",
+								group.length === 1
+									? "grid-cols-1"
+									: group.length === 2
+										? "grid-cols-1 md:grid-cols-2"
+										: "grid-cols-1 md:grid-cols-3",
+							]}
+						>
+							{group.map((image, imageIndex) => (
+								<div class="group overflow-hidden rounded-3xl bg-white shadow-sm ring-1 ring-base-200">
+									<Image
+										src={image}
+										alt={`${title} gallery ${groupIndex + 1}-${imageIndex + 1}`}
+										width={1200}
+										densities={[1.5, 2]}
+										class="h-72 w-full object-cover transition duration-500 group-hover:scale-105 md:h-96"
+									/>
+								</div>
+							))}
+						</div>
+					))
+				}
+			</div>
+
+			<div class="mt-12 flex flex-wrap items-center justify-center gap-4 md:mt-16">
+				<a
+					href="/#timeline"
+					class="inline-flex items-center gap-2 rounded-full border border-base-300 bg-white px-5 py-2.5 text-sm font-semibold text-base-900 transition hover:border-primary-500 hover:text-primary-700"
+				>
+					<span aria-hidden="true">←</span>
+					Back to timeline
+				</a>
+				{
+					nextStory && (
+						<a
+							href={`/story/${nextStory.id}`}
+							class="inline-flex items-center gap-2 rounded-full bg-base-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-primary-700"
+						>
+							Next story
+							<span aria-hidden="true">→</span>
+						</a>
+					)
+				}
+			</div>
+		</div>
+	</section>
+</BaseLayout>

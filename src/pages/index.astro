@@ -1,26 +1,116 @@
 ---
 import { Image } from "astro:assets";
-import About from "@components/About/About.astro";
-import Button from "@components/Button/Button.astro";
-import Contact from "@components/Contact/Contact.astro";
-import FeatureNumbers from "@components/Feature/FeatureNumbers.astro";
-// components
-import Hero from "@components/Hero/Hero.astro";
-import PortfolioThreeCards from "@components/Portfolio/PortfolioThreeCards.astro";
-import PricingThreeCards from "@components/Pricing/PricingThreeCards.astro";
-import Testimonials from "@components/Testimonials/Testimonials.astro";
-// data
-import siteData from "@config/siteData.json";
-// layout
+import { getCollection } from "astro:content";
 import BaseLayout from "@layouts/BaseLayout.astro";
+
+const selectedStoryIds = ["couple-1", "couple-2", "couple-3"];
+
+const portfolios = await getCollection(
+	"portfolios",
+	({ id, data }) => data.draft !== true && selectedStoryIds.includes(id),
+);
+
+const timeline = selectedStoryIds
+	.map((id) => {
+		const portfolio = portfolios.find((item) => item.id === id);
+		if (!portfolio) {
+			return null;
+		}
+
+		const gallery = [portfolio.data.heroImage, ...portfolio.data.images.flat()].slice(0, 4);
+
+		return {
+			id: portfolio.id,
+			date: portfolio.data.date,
+			title: portfolio.data.title,
+			description: portfolio.data.description,
+			clients: portfolio.data.clients.join(" & "),
+			location: portfolio.data.location,
+			images: gallery,
+			detailHref: `/story/${portfolio.id}`,
+		};
+	})
+	.filter((item) => item !== null);
 ---
 
-<BaseLayout title={siteData.title} description={siteData.description} navStartStyle="white">
-	<Hero />
-	<FeatureNumbers />
-	<PortfolioThreeCards />
-	<Testimonials />
-	<PricingThreeCards />
-	<About />
-	<Contact />
+<BaseLayout
+	title="Our Wedding Photo Album"
+	description="A timeline wedding album preserving the most meaningful milestones of our love story."
+	navStartStyle="white"
+>
+	<section class="relative overflow-hidden bg-base-900 pt-28 pb-20 text-white md:pt-36 md:pb-28">
+		<div class="pointer-events-none absolute inset-0 opacity-40">
+			<div class="absolute -top-28 -left-20 h-72 w-72 rounded-full bg-primary-500/30 blur-3xl"></div>
+			<div class="absolute right-0 bottom-0 h-80 w-80 rounded-full bg-fuchsia-500/30 blur-3xl"></div>
+		</div>
+
+		<div class="site-container relative z-10">
+			<p class="mb-4 text-sm tracking-[0.35em] uppercase text-white/70">Wedding Timeline Album</p>
+			<h1 class="mb-6 max-w-4xl font-heading-1 text-4xl leading-tight md:text-6xl">
+				Our Wedding Photo Album
+			</h1>
+			<p class="max-w-2xl text-base text-white/80 md:text-lg">
+				Each photo holds a memory, and each milestone tells a beautiful chapter of our journey together.
+			</p>
+		</div>
+	</section>
+
+	<section id="timeline" class="bg-base-50 py-14 md:py-20">
+		<div class="site-container">
+			<div class="mb-10 flex items-end justify-between gap-6 md:mb-14">
+				<div>
+					<p class="mb-2 text-xs tracking-[0.25em] uppercase text-primary-700">Our Story</p>
+					<h2 class="h2">Through the Timeline</h2>
+				</div>
+				<p class="hidden max-w-xl text-sm text-base-700 md:block">
+					The current gallery is mocked using the existing portfolio image sets from couple-1 to couple-3.
+				</p>
+			</div>
+
+			<div class="relative space-y-12 md:space-y-16">
+				<div class="absolute top-0 left-6 hidden h-full w-px bg-base-300 md:left-1/2 md:block"></div>
+
+				{
+					timeline.map((item, index) => (
+						<article class="relative md:grid md:grid-cols-2 md:gap-10 lg:gap-14">
+							<div class:list={["mb-5 md:mb-0", index % 2 === 0 ? "md:pr-8" : "md:order-2 md:pl-8"]}>
+								<div class="mb-3 inline-flex items-center rounded-full bg-primary-100 px-3 py-1 text-xs font-semibold tracking-[0.15em] text-primary-800 uppercase">
+									{item.date}
+								</div>
+								<h3 class="mb-3 text-2xl font-semibold text-base-900">{item.title}</h3>
+								<p class="description">{item.description}</p>
+								<p class="mt-4 text-sm font-medium text-base-700">{item.clients} · {item.location}</p>
+								<a
+									href={item.detailHref}
+									class="mt-5 inline-flex items-center gap-2 rounded-full bg-base-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-primary-700"
+								>
+									View details
+									<span aria-hidden="true">→</span>
+								</a>
+							</div>
+
+							<div class:list={[index % 2 === 0 ? "md:pl-8" : "md:order-1 md:pr-8"]}>
+								<div class="grid grid-cols-2 gap-3 md:gap-4">
+									{item.images.map((image, imageIndex) => (
+										<Image
+											src={image}
+											alt={`${item.title} - photo ${imageIndex + 1}`}
+											width={900}
+											densities={[1.5, 2]}
+											class:list={[
+												"h-44 w-full rounded-2xl object-cover shadow-sm ring-1 ring-base-200 md:h-56",
+												imageIndex % 3 === 0 ? "col-span-2" : "col-span-1",
+											]}
+										/>
+									))}
+								</div>
+							</div>
+
+							<div class="absolute top-3 left-6 hidden h-3 w-3 -translate-x-1/2 rounded-full border-2 border-white bg-primary-600 md:block md:left-1/2"></div>
+						</article>
+					))
+				}
+			</div>
+		</div>
+	</section>
 </BaseLayout>

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Family placeholder">
+  <defs><linearGradient id="g9" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#c4b5fd"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs>
+  <rect width="1200" height="800" fill="url(#g9)"/>
+  <text x="50%" y="48%" dominant-baseline="middle" text-anchor="middle" font-size="72" fill="white" font-family="serif">Family</text>
+</svg>

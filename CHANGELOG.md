@@ -6,6 +6,15 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+- Replaced the homepage sections with a responsive wedding timeline album experience
+  - Rebuilt `src/pages/index.astro` into a single-page wedding story layout with hero + timeline milestones
+  - Added timeline-based mock gallery data and responsive multi-image grids for each event
+  - Added static placeholder images under `public/mock-wedding/*.svg` so real photos can be dropped in later
+  - Updated timeline content copy to English
+  - Switched timeline gallery sources to existing portfolio images from `couple-1` through `couple-3`
+  - Added `View details` CTA per timeline milestone linking to dedicated story pages
+  - Added a new responsive route `src/pages/story/[...slug].astro` with redesigned wedding story detail UI
+
 - Rebranded project metadata and content
   - Updated package name to `wedding` and version to `0.0.1`
   - Replaced all legacy branding and authoring references with `Huynh Duc Khoan`

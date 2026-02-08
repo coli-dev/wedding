@@ -1,0 +1,67 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+	"organizeImports": {
+		"enabled": true
+	},
+	"formatter": {
+		"enabled": true,
+		"formatWithErrors": false,
+		"ignore": [],
+		"attributePosition": "auto",
+		"indentStyle": "tab",
+		"indentWidth": 2,
+		"lineEnding": "lf",
+		"lineWidth": 100
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"correctness": {
+				"noUnusedVariables": "off",
+				"noUnusedImports": "off"
+			},
+			"suspicious": {
+				"noExplicitAny": "off",
+				"noConsoleLog": "warn"
+			},
+			"style": {
+				"noNonNullAssertion": "off"
+			},
+			"a11y": {
+				"recommended": true
+			}
+		}
+	},
+	"javascript": {
+		"formatter": {
+			"quoteStyle": "double",
+			"jsxQuoteStyle": "double",
+			"semicolons": "always",
+			"trailingCommas": "all"
+		}
+	},
+	"json": {
+		"formatter": {
+			"indentStyle": "tab"
+		}
+	},
+	"files": {
+		"ignore": [
+			"dist/**",
+			".astro/**",
+			"node_modules/**",
+			"**/*.d.ts",
+			".tours/**",
+			"src/docs/scripts/**",
+			"scripts/**",
+			"public/pagefind/**",
+			".github/**",
+			".netlify/**",
+			".changeset/**",
+			"bun.lock",
+			"src/styles/fonts.css",
+			"src/styles/global.css"
+		]
+	}
+}
